@@ -1484,6 +1484,10 @@ export default class Select extends Component<Props, State> {
 
     if (isMulti) {
       const selectValues = () => {
+        const arr =
+          selectValue && maxNumberForMulti
+            ? selectValue.filter((el, i) => i > maxNumberForMulti - 1)
+            : [];
         return (
           <React.Fragment>
             {selectValue.map(opt => {
@@ -1495,7 +1499,7 @@ export default class Select extends Component<Props, State> {
                   components={{
                     Container: MultiValueContainer,
                     Label: MultiValueLabel,
-                    Remove: MultiValueRemove,
+                    Remove: MultiValueRemove
                   }}
                   isFocused={isOptionFocused}
                   isDisabled={isDisabled}
@@ -1506,18 +1510,18 @@ export default class Select extends Component<Props, State> {
                     onMouseDown: e => {
                       e.preventDefault();
                       e.stopPropagation();
-                    },
+                    }
                   }}
                   data={opt}
                 >
-                  {this.formatOptionLabel(opt, 'value')}
+                  {this.formatOptionLabel(opt, "value")}
                 </MultiValue>
               );
             })}
-            {maxNumberForMulti && (
+            {maxNumberForMulti && arr.length && (
               <ul className="customMultyBlock">
-                {selectValue.splice(maxNumberForMulti).map(opt => {
-                  const isOptionFocused = opt === focusedValue;
+                {arr.map(item => {
+                  const isOptionFocused = item === focusedValue;
 
                   return (
                     <MultiValue
@@ -1525,22 +1529,22 @@ export default class Select extends Component<Props, State> {
                       components={{
                         Container: MultiValueContainer,
                         Label: MultiValueLabel,
-                        Remove: MultiValueRemove,
+                        Remove: MultiValueRemove
                       }}
                       isFocused={isOptionFocused}
                       isDisabled={isDisabled}
-                      key={this.getOptionValue(opt)}
+                      key={this.getOptionValue(item)}
                       removeProps={{
-                        onClick: () => this.removeValue(opt),
-                        onTouchEnd: () => this.removeValue(opt),
+                        onClick: () => this.removeValue(item),
+                        onTouchEnd: () => this.removeValue(item),
                         onMouseDown: e => {
                           e.preventDefault();
                           e.stopPropagation();
-                        },
+                        }
                       }}
-                      data={opt}
+                      data={item}
                     >
-                      {this.formatOptionLabel(opt, 'value')}
+                      {this.formatOptionLabel(item, "value")}
                     </MultiValue>
                   );
                 })}
